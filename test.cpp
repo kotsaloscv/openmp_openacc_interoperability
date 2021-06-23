@@ -14,9 +14,10 @@ int main() {
     int *x_dev = (int *)acc_malloc(N*sizeof(int));
     omp_target_associate_ptr(x, x_dev, N*sizeof(int), 0, 0);
     
-    #pragma omp target loop is_device_ptr(x_dev)
+    //#pragma omp target loop is_device_ptr(x_dev)
+    #pragma omp target loop map(x)
     for (int i=0; i<N; ++i)
-        x_dev[i] = 2;
+        x[i] = 2; //x_dev[i] = 2;
     
     #pragma acc exit data copyout(x[0:N])
 
