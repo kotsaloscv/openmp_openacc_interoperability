@@ -1,1 +1,3 @@
-# openMP_GPU
+# openMP/openACC Interoperability
+
+Test the openMP/openACC interoperability

@@ -1,23 +1,21 @@
-// nvc++ -mp=gpu -acc -cuda test.cpp
+// -mp=gpu -> Enable OpenMP targeting GPU and Multicore
+// nvc++ -mp=gpu -acc openacc.cpp
 // nvprof --print-gpu-trace ./a.out
 #include <iostream>
 #include <omp.h>
-#include <openacc.h>
 
-int main() {
+int main(){
 
     int N = 10;
     int *x = new int[N];
 
     std::cout << "Number of devices : " << omp_get_num_devices() << std::endl;
 
-    int *x_dev = (int *)acc_malloc(N*sizeof(int));
-    omp_target_associate_ptr(x, x_dev, N*sizeof(int), 0, 0);
+    #pragma acc enter data copyin(x[0:N])
     
-    //#pragma omp target loop is_device_ptr(x_dev)
-    #pragma omp target loop map(x)
+    #pragma acc parallel loop present(x)
     for (int i=0; i<N; ++i)
-        x[i] = 2; //x_dev[i] = 2;
+        x[i] = 2;
     
     #pragma acc exit data copyout(x[0:N])
 

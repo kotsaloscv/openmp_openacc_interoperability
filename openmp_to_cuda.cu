@@ -1,3 +1,6 @@
+// -mp=gpu -> Enable OpenMP targeting GPU and Multicore
+// nvc++ -mp=gpu -acc openmp_to_cuda.cu
+// nvprof --print-gpu-trace ./a.out
 #include <iostream>
 #include <omp.h>
 #include <openacc.h>
